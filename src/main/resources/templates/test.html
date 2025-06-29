@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Technical Test</title>
+    <style>
+        /* Reset */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            background: white;
+            max-width: 600px;
+            width: 100%;
+            padding: 30px 40px;
+            border-radius: 14px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        form label {
+            display: block;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 90px;
+            padding: 12px 15px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            border: 2px solid #d0d8e2;
+            font-size: 1rem;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #2980b9;
+            box-shadow: 0 0 8px rgba(41, 128, 185, 0.3);
+        }
+
+        button {
+            width: 100%;
+            background-color: #2980b9;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 15px 0;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #1c5985;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 650px) {
+            .container {
+                padding: 25px 20px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            textarea {
+                min-height: 70px;
+            }
+
+            button {
+                font-size: 1rem;
+                padding: 13px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Technical & Communication Test</h2>
+        <form th:action="@{/candidates/testSubmit}" method="post">
+            <!-- Hidden Inputs -->
+            <input type="hidden" name="fullName" th:value="${fullName}"/>
+            <input type="hidden" name="contactNumber" th:value="${contactNumber}"/>
+            <input type="hidden" name="email" th:value="${email}"/>
+            <input type="hidden" name="jobRole" th:value="${jobRole}"/>
+
+            <label>1. Explain OOP Concepts in brief:</label>
+            <textarea name="answer1" required></textarea>
+
+            <label>2. What is Spring Boot used for?</label>
+            <textarea name="answer2" required></textarea>
+
+            <label>3. Describe a challenging project you worked on:</label>
+            <textarea name="answer3" required></textarea>
+
+            <label>4. How do you handle communication in a team?</label>
+            <textarea name="answer4" required></textarea>
+
+            <label>5. Why do you want to join this company?</label>
+            <textarea name="answer5" required></textarea>
+
+            <button type="submit">Complete Test</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Resume Upload</title>
+    <style>
+        /* Basic Reset */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef2f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 30px 35px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            max-width: 460px;
+            width: 100%;
+            text-align: center;
+            animation: slideDownFade 0.7s ease forwards;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        form {
+            text-align: left;
+        }
+
+        label {
+            font-weight: 600;
+            color: #34495e;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        input[type="file"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #d1dce5;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="file"]:focus,
+        input[type="file"]:hover {
+            border-color: #2980b9;
+            outline: none;
+            box-shadow: 0 0 8px rgba(41, 128, 185, 0.3);
+        }
+
+        button {
+            margin-top: 25px;
+            width: 100%;
+            background-color: #2980b9;
+            border: none;
+            padding: 14px 0;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #1c5985;
+        }
+
+        @keyframes slideDownFade {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 500px) {
+            .container {
+                padding: 25px 20px;
+            }
+
+            button {
+                font-size: 1rem;
+                padding: 12px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Your Resume</h2>
+        <form th:action="@{/candidates/finalSubmit}" method="post" enctype="multipart/form-data">
+            <!-- Hidden Inputs -->
+            <input type="hidden" name="fullName" th:value="${fullName}"/>
+            <input type="hidden" name="contactNumber" th:value="${contactNumber}"/>
+            <input type="hidden" name="email" th:value="${email}"/>
+            <input type="hidden" name="jobRole" th:value="${jobRole}"/>
+
+            <input type="hidden" name="answer1" th:value="${answer1}"/>
+            <input type="hidden" name="answer2" th:value="${answer2}"/>
+            <input type="hidden" name="answer3" th:value="${answer3}"/>
+            <input type="hidden" name="answer4" th:value="${answer4}"/>
+            <input type="hidden" name="answer5" th:value="${answer5}"/>
+
+            <label>Resume (PDF only):</label>
+            <input type="file" name="resume" accept=".pdf" required/>
+
+            <button type="submit">Submit Registration</button>
+        </form>
+    </div>
+</body>
+</html>

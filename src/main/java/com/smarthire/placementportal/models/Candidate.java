@@ -5,9 +5,9 @@ import lombok.*;
 
 @Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Candidate {
 
     @Id
@@ -15,20 +15,35 @@ public class Candidate {
     private Long id;
 
     private String fullName;
-
     private String email;
-
     private String contactNumber;
-
     private String jobRole;
 
-    private String resumeFileName; // store filename
+    @Column(length = 2000)
+    private String answer1;
 
+    @Column(length = 2000)
+    private String answer2;
+
+    @Column(length = 2000)
+    private String answer3;
+
+    @Column(length = 2000)
+    private String answer4;
+
+    @Column(length = 2000)
+    private String answer5;
+
+    private String resumeFileName;
     private double resumeScore;
-
     private double testScore;
 
-    private double originalityScore;
+    private String status;
 
-    private double totalScore;
+    @Column(nullable = false)
+    private double originalityScore = 0.0;
+
+    // 🆕 Added missing field
+    @Column(nullable = false)
+    private double totalScore = 0.0;
 }

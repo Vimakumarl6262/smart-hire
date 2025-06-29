@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/candidates")
@@ -26,56 +27,83 @@ public class CandidateController {
     @Autowired private ResumeParserService resumeParserService;
     @Autowired private ResumeScoringService resumeScoringService;
 
-    /* ---------------- GET: registration form ---------------- */
     @GetMapping("/register")
     public String showRegisterForm() {
-        return "register";                 // templates/register.html
+        return "register";
     }
 
-    /* --------------- POST: handle registration -------------- */
-    @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String registerCandidate(@RequestParam String fullName,
-                                    @RequestParam String email,
-                                    @RequestParam String contactNumber,
-                                    @RequestParam String jobRole,
-                                    @RequestParam("resume") MultipartFile resume,
-                                    Model model) throws IOException {
+    @PostMapping("/startTest")
+    public String startTest(@RequestParam Map<String, String> data, Model model) {
+        model.addAllAttributes(data);
+        return "test";
+    }
 
-        /* 1.  ensure uploads dir */
+    @PostMapping("/testSubmit")
+    public String submitTest(@RequestParam Map<String, String> data, Model model) {
+        model.addAllAttributes(data);
+        return "submit";
+    }
+
+    @PostMapping(value = "/finalSubmit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String finalSubmit(@RequestParam("resume") MultipartFile resume,
+                              @RequestParam Map<String, String> data,
+                              Model model) throws IOException {
+
         File dir = new File(UPLOAD_DIR);
         if (!dir.exists()) dir.mkdirs();
 
-        /* 2.  save resume */
         String fileName = System.currentTimeMillis() + "_" + resume.getOriginalFilename();
         File savedFile = new File(UPLOAD_DIR + fileName);
         resume.transferTo(savedFile);
 
-        /* 3.  extract text & score */
         String resumeText;
         double resumeScore = 0;
         try {
             resumeText = resumeParserService.extractTextFromResume(savedFile);
-            resumeScore = resumeScoringService.calculateScore(resumeText);
+            resumeScore = resumeScoringService.calculateResumeScore(resumeText);
         } catch (TikaException e) {
             model.addAttribute("error", "Error reading resume: " + e.getMessage());
             return "candidate-result";
         }
 
-        /* 4.  store candidate */
-        Candidate cand = Candidate.builder()
-                .fullName(fullName)
-                .email(email)
-                .contactNumber(contactNumber)
-                .jobRole(jobRole)
+        String[] answers = new String[] {
+                data.get("answer1"),
+                data.get("answer2"),
+                data.get("answer3"),
+                data.get("answer4"),
+                data.get("answer5")
+        };
+
+        double testScore = resumeScoringService.calculateTestScore(answers);
+        double originalityScore = 0.0; // Future use
+        double totalScore = resumeScore + testScore + originalityScore;
+        String status = resumeScoringService.determineFinalStatus(resumeScore, testScore);
+
+        Candidate candidate = Candidate.builder()
+                .fullName(data.get("fullName"))
+                .email(data.get("email"))
+                .contactNumber(data.get("contactNumber"))
+                .jobRole(data.get("jobRole"))
+                .answer1(data.get("answer1"))
+                .answer2(data.get("answer2"))
+                .answer3(data.get("answer3"))
+                .answer4(data.get("answer4"))
+                .answer5(data.get("answer5"))
                 .resumeFileName(fileName)
                 .resumeScore(resumeScore)
+                .testScore(testScore)
+                .originalityScore(originalityScore)
+                .totalScore(totalScore)
+                .status(status)
                 .build();
-        candidateService.saveCandidate(cand);
 
-        /* 5.  pass data to view */
-        model.addAttribute("name", fullName);
+        candidateService.saveCandidate(candidate);
+
+        model.addAttribute("name", data.get("fullName"));
         model.addAttribute("score", String.format("%.2f", resumeScore));
+        model.addAttribute("testScore", String.format("%.2f", testScore));
+        model.addAttribute("status", status);
 
-        return "candidate-result";         // templates/candidate-result.html
+        return "candidate-result";
     }
 }

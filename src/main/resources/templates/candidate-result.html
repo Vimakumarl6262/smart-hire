@@ -1,44 +1,83 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>SmartHire | Resume Score</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Result</title>
     <style>
-        body{margin:0;font-family:'Segoe UI',sans-serif;background:#f3f4f6;
-             display:flex;align-items:center;justify-content:center;height:100vh;}
-        .card{background:#fff;padding:35px 45px;border-radius:14px;
-              box-shadow:0 8px 24px rgba(0,0,0,.12);text-align:center;max-width:450px;width:90%;}
-        .msg{color:#16a34a;background:#dcfce7;font-weight:600;padding:12px;border-radius:8px;}
-        .score-bar{background:#e5e7eb;border-radius:20px;height:30px;margin:25px 0;overflow:hidden;}
-        .fill{height:100%;background:linear-gradient(90deg,#10b981,#3b82f6);
-              color:#fff;text-align:right;padding-right:12px;line-height:30px;border-radius:20px;}
-        .btn{display:inline-block;margin-top:18px;padding:10px 24px;background:#3b82f6;color:#fff;
-             border:none;border-radius:8px;text-decoration:none;}
-        .btn:hover{background:#2563eb}
-        .error{background:#fee2e2;color:#b91c1c;padding:12px;border-radius:8px;font-weight:600;}
+        /* Reset some default */
+        body, h2, p, span, b {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .result-card {
+            background: #fff;
+            max-width: 480px;
+            width: 100%;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            color: #333;
+            animation: fadeIn 0.8s ease forwards;
+        }
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        h2 span {
+            color: #2980b9;
+            font-weight: 700;
+        }
+        p {
+            font-size: 1.1rem;
+            margin: 15px 0;
+        }
+        b {
+            color: #27ae60;
+            font-weight: 700;
+        }
+        p:last-child {
+            margin-top: 30px;
+            font-style: italic;
+            color: #7f8c8d;
+        }
+        /* subtle fade in */
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        /* Responsive for small devices */
+        @media(max-width: 500px) {
+            .result-card {
+                padding: 25px 20px;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+            p {
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="card">
+    <div class="result-card">
+        <h2>Thank You, <span th:text="${name}"></span>!</h2>
 
-    <!-- Success or error block -->
-    <div th:if="${error}" class="error" th:text="${error}"></div>
-    <div th:if="${error == null}" class="msg">✅ Candidate saved successfully!</div>
+        <p>Your resume score is: <b th:text="${score}"></b></p>
+        <p>Your test score is: <b th:text="${testScore}"></b></p>
+        <p>Final Status: <b th:text="${status}"></b></p>
 
-    <h3 th:if="${error == null}" th:text="'Hello ' + ${name} + '!'">Hello User!</h3>
-
-    <!-- Score bar -->
-    <div th:if="${error == null}">
-        <h4>Your Resume Score</h4>
-        <div class="score-bar">
-            <div class="fill" th:style="'width:' + ${score} + '%'">
-                <span th:text="${score} + '%'">0%</span>
-            </div>
-        </div>
+        <p>We’ll get back to you shortly.</p>
     </div>
-
-    <a href="/" class="btn">🏠 Back to Home</a>
-</div>
 </body>
 </html>
