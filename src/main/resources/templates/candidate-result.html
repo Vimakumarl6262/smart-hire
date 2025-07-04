@@ -3,7 +3,6 @@
 <head>
     <title>Result</title>
     <style>
-        /* Reset some default */
         body, h2, p, span, b {
             margin: 0;
             padding: 0;
@@ -45,17 +44,18 @@
             color: #27ae60;
             font-weight: 700;
         }
+        i {
+            color: #34495e;
+        }
         p:last-child {
             margin-top: 30px;
             font-style: italic;
             color: #7f8c8d;
         }
-        /* subtle fade in */
         @keyframes fadeIn {
             from {opacity: 0; transform: translateY(20px);}
             to {opacity: 1; transform: translateY(0);}
         }
-        /* Responsive for small devices */
         @media(max-width: 500px) {
             .result-card {
                 padding: 25px 20px;
@@ -76,6 +76,10 @@
         <p>Your resume score is: <b th:text="${score}"></b></p>
         <p>Your test score is: <b th:text="${testScore}"></b></p>
         <p>Final Status: <b th:text="${status}"></b></p>
+
+        <!-- ✅ AI Feedback sections -->
+        <p>Resume Feedback: <br><i th:text="${resumeFeedback}"></i></p>
+        <p>Test Feedback: <br><i th:text="${testFeedback}"></i></p>
 
         <p>We’ll get back to you shortly.</p>
     </div>

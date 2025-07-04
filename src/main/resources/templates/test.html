@@ -1,147 +1,100 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Technical Test</title>
+    <title>Assessment Test</title>
     <style>
-        /* Reset */
-        * {
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
-            margin: 0;
-            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f9fafb;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding: 40px 20px;
+            padding: 40px 0;
+            margin: 0;
         }
 
-        .container {
-            background: white;
-            max-width: 600px;
-            width: 100%;
-            padding: 30px 40px;
-            border-radius: 14px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            animation: fadeIn 0.8s ease forwards;
+        .form-card {
+            background-color: #fff;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 700px;
         }
 
         h2 {
             text-align: center;
-            color: #2c3e50;
+            color: #222;
             margin-bottom: 30px;
-            font-weight: 700;
-            font-size: 1.8rem;
         }
 
-        form label {
+        label {
             display: block;
             font-weight: 600;
-            color: #34495e;
-            margin-bottom: 8px;
+            margin-top: 20px;
             font-size: 1.1rem;
+            color: #333;
         }
 
         textarea {
             width: 100%;
-            min-height: 90px;
-            padding: 12px 15px;
-            margin-bottom: 25px;
-            border-radius: 10px;
-            border: 2px solid #d0d8e2;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
             font-size: 1rem;
             resize: vertical;
-            transition: border-color 0.3s ease;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: #2980b9;
-            box-shadow: 0 0 8px rgba(41, 128, 185, 0.3);
         }
 
         button {
             width: 100%;
-            background-color: #2980b9;
-            color: white;
-            font-size: 1.2rem;
-            font-weight: 700;
-            padding: 15px 0;
+            margin-top: 30px;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background-color: #007bff;
+            color: #fff;
             border: none;
-            border-radius: 12px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #1c5985;
-        }
-
-        /* Fade-in animation */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 650px) {
-            .container {
-                padding: 25px 20px;
-            }
-
-            h2 {
-                font-size: 1.5rem;
-            }
-
-            textarea {
-                min-height: 70px;
-            }
-
-            button {
-                font-size: 1rem;
-                padding: 13px 0;
-            }
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Technical & Communication Test</h2>
-        <form th:action="@{/candidates/testSubmit}" method="post">
-            <!-- Hidden Inputs -->
-            <input type="hidden" name="fullName" th:value="${fullName}"/>
-            <input type="hidden" name="contactNumber" th:value="${contactNumber}"/>
-            <input type="hidden" name="email" th:value="${email}"/>
-            <input type="hidden" name="jobRole" th:value="${jobRole}"/>
+<div class="form-card">
+    <h2>Assessment Test</h2>
+    
+   
+    <form th:action="@{/candidates/finalSubmit}" method="post" enctype="multipart/form-data">
 
-            <label>1. Explain OOP Concepts in brief:</label>
-            <textarea name="answer1" required></textarea>
+        <!-- Hidden Inputs -->
+        <input type="hidden" name="fullName" th:value="${fullName}" />
+        <input type="hidden" name="contactNumber" th:value="${contactNumber}" />
+        <input type="hidden" name="email" th:value="${email}" />
+        <input type="hidden" name="jobRole" th:value="${jobRole}" />
+        <input type="hidden" name="resumeFileName" th:value="${resumeFileName}" />
 
-            <label>2. What is Spring Boot used for?</label>
-            <textarea name="answer2" required></textarea>
+        <!-- Questions and Answers -->
+        <label th:text="' ' + ${question1}"></label>
+        <textarea name="answer1" placeholder="Type your answer here..." required></textarea>
 
-            <label>3. Describe a challenging project you worked on:</label>
-            <textarea name="answer3" required></textarea>
+        <label th:text="' ' + ${question2}"></label>
+        <textarea name="answer2" placeholder="Type your answer here..." required></textarea>
 
-            <label>4. How do you handle communication in a team?</label>
-            <textarea name="answer4" required></textarea>
+        <label th:text="' ' + ${question3}"></label>
+        <textarea name="answer3" placeholder="Type your answer here..." required></textarea>
 
-            <label>5. Why do you want to join this company?</label>
-            <textarea name="answer5" required></textarea>
+        <label th:text="' ' + ${question4}"></label>
+        <textarea name="answer4" placeholder="Type your answer here..." required></textarea>
 
-            <button type="submit">Complete Test</button>
-        </form>
-    </div>
+        <label th:text="' ' + ${question5}"></label>
+        <textarea name="answer5" placeholder="Type your answer here..." required></textarea>
+
+        <button type="submit">Submit Test</button>
+    </form>
+</div>
 </body>
 </html>

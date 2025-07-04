@@ -1,149 +1,23 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Candidate Registration</title>
-    <style>
-        /* Reset and base */
-        * {
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f7f9fc;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+<form th:action="@{/candidates/startTest}" method="post" enctype="multipart/form-data" style="max-width: 550px; margin: 0 auto; background: #fff; padding: 30px 40px; border-radius: 12px; box-shadow: 0 12px 24px rgba(0,0,0,0.08); font-family: 'Segoe UI', sans-serif;">
 
-        .container {
-            background: #fff;
-            padding: 35px 40px;
-            border-radius: 12px;
-            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
-            max-width: 450px;
-            width: 100%;
-            text-align: center;
-            animation: fadeInUp 0.8s ease forwards;
-        }
+    <h2 style="text-align: center; color: #2c3e50; margin-bottom: 25px;">Candidate Registration</h2>
 
-        h2 {
-            margin-bottom: 25px;
-            color: #2c3e50;
-        }
+    <label style="font-weight: 600; color: #34495e; margin-bottom: 8px; display: block;">Full Name:</label>
+    <input type="text" name="fullName" required style="width: 100%; padding: 12px; margin-bottom: 18px; border-radius: 8px; border: 2px solid #d1dce5; font-size: 1rem;" />
 
-        form {
-            text-align: left;
-        }
+    <label style="font-weight: 600; color: #34495e; margin-bottom: 8px; display: block;">Contact Number:</label>
+    <input type="text" name="contactNumber" required style="width: 100%; padding: 12px; margin-bottom: 18px; border-radius: 8px; border: 2px solid #d1dce5; font-size: 1rem;" />
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #34495e;
-        }
+    <label style="font-weight: 600; color: #34495e; margin-bottom: 8px; display: block;">Email:</label>
+    <input type="email" name="email" required style="width: 100%; padding: 12px; margin-bottom: 18px; border-radius: 8px; border: 2px solid #d1dce5; font-size: 1rem;" />
 
-        input[type="text"],
-        input[type="email"] {
-            width: 100%;
-            padding: 10px 15px;
-            margin-bottom: 20px;
-            border: 2px solid #d1dce5;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
+    <label style="font-weight: 600; color: #34495e; margin-bottom: 8px; display: block;">Job Role:</label>
+    <input type="text" name="jobRole" required style="width: 100%; padding: 12px; margin-bottom: 18px; border-radius: 8px; border: 2px solid #d1dce5; font-size: 1rem;" />
 
-        input[type="text"]:focus,
-        input[type="email"]:focus {
-            border-color: #2980b9;
-            outline: none;
-            box-shadow: 0 0 8px rgba(41, 128, 185, 0.3);
-        }
+    <label style="font-weight: 600; color: #34495e; margin-bottom: 8px; display: block;">Upload Resume:</label>
+    <input type="file" name="resume" accept=".pdf,.doc,.docx" required style="width: 100%; padding: 10px; margin-bottom: 25px; border-radius: 8px; border: 2px dashed #aab7c4; font-size: 1rem;" />
 
-        h4 {
-            margin-top: 0;
-            margin-bottom: 15px;
-            color: #2c3e50;
-            font-weight: 700;
-        }
-
-        ul {
-            list-style: inside disc;
-            margin-bottom: 25px;
-            color: #555;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        button {
-            background: #2980b9;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 600;
-            padding: 12px 0;
-            width: 100%;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background: #1c5985;
-        }
-
-        /* Animation */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(25px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 500px) {
-            .container {
-                padding: 30px 25px;
-            }
-            button {
-                font-size: 1rem;
-                padding: 10px 0;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Candidate Registration</h2>
-        <form th:action="@{/candidates/startTest}" method="post">
-            <label>Full Name:</label>
-            <input type="text" name="fullName" required/>
-
-            <label>Contact Number:</label>
-            <input type="text" name="contactNumber" required/>
-
-            <label>Email:</label>
-            <input type="email" name="email" required/>
-
-            <label>Job Role:</label>
-            <input type="text" name="jobRole" required/>
-
-            <h4>Test Instructions:</h4>
-            <ul>
-                <li>Answer all questions honestly.</li>
-                <li>No time limit but be concise.</li>
-                <li>Click "Start Test" when ready.</li>
-            </ul>
-
-            <button type="submit">Start Test</button>
-        </form>
-    </div>
-</body>
-</html>
+    <button type="submit" style="background-color: #007bff; color: white; width: 100%; padding: 14px; font-size: 1.1rem; font-weight: bold; border: none; border-radius: 10px; cursor: pointer; transition: background-color 0.3s ease;">
+        Start Test
+    </button>
+</form>
