@@ -5,6 +5,7 @@ import com.smarthire.placementportal.services.CandidateService;
 import com.smarthire.placementportal.services.LocalLLMService;
 import com.smarthire.placementportal.services.ResumeParserService;
 import com.smarthire.placementportal.services.ResumeScoringService;
+import com.smarthire.placementportal.services.PlagiarismCheckService;
 import org.apache.tika.exception.TikaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,6 +28,7 @@ public class CandidateController {
     @Autowired private ResumeParserService resumeParserService;
     @Autowired private ResumeScoringService resumeScoringService;
     @Autowired private LocalLLMService localLLMService;
+    @Autowired private PlagiarismCheckService plagiarismCheckService;
 
     @GetMapping("/register")
     public String showRegisterForm() {
@@ -44,7 +46,8 @@ public class CandidateController {
         File dir = new File(UPLOAD_DIR);
         if (!dir.exists()) dir.mkdirs();
 
-        String fileName = System.currentTimeMillis() + "_" + resume.getOriginalFilename();
+        String originalName = resume.getOriginalFilename();
+        String fileName = System.currentTimeMillis() + "_" + originalName.replaceAll("\\s+", "_");
         File savedFile = new File(UPLOAD_DIR + fileName);
         resume.transferTo(savedFile);
 
@@ -102,7 +105,9 @@ public class CandidateController {
         aiTestFeedback = localLLMService.scoreTestAnswers(answers, data.get("jobRole"));
         double testScore = resumeScoringService.extractScoreFromText(aiTestFeedback);
 
-        double originalityScore = 0.0;
+        double plagiarismScore = plagiarismCheckService.calculatePlagiarismScore(answers);
+        double originalityScore = 100 - plagiarismScore;
+
         double totalScore = resumeScore + testScore + originalityScore;
         String status = resumeScoringService.determineFinalStatus(resumeScore, testScore);
 
@@ -130,6 +135,7 @@ public class CandidateController {
         model.addAttribute("score", String.format("%.2f", resumeScore));
         model.addAttribute("testScore", String.format("%.2f", testScore));
         model.addAttribute("totalScore", String.format("%.2f", totalScore));
+        model.addAttribute("originalityScore", String.format("%.2f", originalityScore));
         model.addAttribute("status", status);
         model.addAttribute("aiFeedback", aiResumeFeedback);
         model.addAttribute("testFeedback", aiTestFeedback);
